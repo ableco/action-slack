@@ -43,16 +43,16 @@ export class Client {
     const { sha } = github.context;
     const { owner, repo } = github.context.repo;
     const commit = await this.github.repos.getCommit({ owner, repo, ref: sha });
-    const { author } = commit.data.commit;
+    const { author } = commit.data;
     const commitMessage = `${
       commit.data.commit.message
     } (<https://github.com/${owner}/${repo}/commit/${sha}|${sha.substring(
       0,
       7,
     )}>)`;
-    const template = await this.payloadTemplate(author.name, commitMessage);
+    const template = await this.payloadTemplate(author.login, commitMessage);
     template.attachments[0].color = 'good';
-    template.text += `Success: ${author.name}'s workflow (${github.context.workflow}) in <https://github.com/${owner}/${repo}|${owner}/${repo}>\n`;
+    template.text += `Success: ${author.login}'s workflow (${github.context.workflow}) in <https://github.com/${owner}/${repo}|${owner}/${repo}>\n`;
     template.text += text;
 
     return template;
@@ -65,17 +65,17 @@ export class Client {
     const { sha } = github.context;
     const { owner, repo } = github.context.repo;
     const commit = await this.github.repos.getCommit({ owner, repo, ref: sha });
-    const { author } = commit.data.commit;
+    const { author } = commit.data;
     const commitMessage = `${
       commit.data.commit.message
     } (<https://github.com/${owner}/${repo}/commit/${sha}|${sha.substring(
       0,
       7,
     )}>)`;
-    const template = await this.payloadTemplate(author.name, commitMessage);
+    const template = await this.payloadTemplate(author.login, commitMessage);
     template.attachments[0].color = 'danger';
     template.text += this.mentionText(this.with.only_mention_fail);
-    template.text += `Failed: ${author.name}'s workflow (${github.context.workflow}) in <https://github.com/${owner}/${repo}|${owner}/${repo}>\n`;
+    template.text += `Failed: ${author.login}'s workflow (${github.context.workflow}) in <https://github.com/${owner}/${repo}|${owner}/${repo}>\n`;
     template.text += text;
 
     return template;
@@ -88,16 +88,16 @@ export class Client {
     const { sha } = github.context;
     const { owner, repo } = github.context.repo;
     const commit = await this.github.repos.getCommit({ owner, repo, ref: sha });
-    const { author } = commit.data.commit;
+    const { author } = commit.data;
     const commitMessage = `${
       commit.data.commit.message
     } (<https://github.com/${owner}/${repo}/commit/${sha}|${sha.substring(
       0,
       7,
     )}>)`;
-    const template = await this.payloadTemplate(author.name, commitMessage);
+    const template = await this.payloadTemplate(author.login, commitMessage);
     template.attachments[0].color = 'warning';
-    template.text += `Cancel: ${author.name}'s workflow (${github.context.workflow}) in <https://github.com/${owner}/${repo}|${owner}/${repo}>\n`;
+    template.text += `Cancel: ${author.login}'s workflow (${github.context.workflow}) in <https://github.com/${owner}/${repo}|${owner}/${repo}>\n`;
     template.text += text;
 
     return template;

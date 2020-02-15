@@ -2,17 +2,17 @@ process.env.GITHUB_WORKFLOW = 'PR Checks';
 process.env.GITHUB_SHA = 'b24f03a32e093fe8d55e23cfd0bb314069633b2f';
 process.env.GITHUB_REF = 'refs/heads/feature/19';
 process.env.GITHUB_EVENT_NAME = 'push';
-
 import { Client, With } from '../src/client';
 
+const BRANCH_NAME = 'feature/19';
 const fixedFields = () => {
   return [
-    { short: true, title: 'Branch', value: process.env.GITHUB_REF },
+    { short: true, title: 'Branch', value: BRANCH_NAME },
     { short: true, title: 'Event', value: process.env.GITHUB_EVENT_NAME },
     {
       title: 'Action URL',
       value:
-        '<https://github.com/ableco/action-slack-notify/commit/b24f03a32e093fe8d55e23cfd0bb314069633b2f/checks|action>',
+        'https://github.com/ableco/action-slack-notify/commit/b24f03a32e093fe8d55e23cfd0bb314069633b2f/checks',
     },
     {
       title: 'Commit details',
@@ -27,9 +27,9 @@ const getTemplate: any = (text: string) => {
     text,
     attachments: [
       {
-        author_name: '839',
-        author_link: 'https://github.com/839',
-        author_icon: 'https://github.com/839.png?size=32',
+        author_name: '8398a7',
+        author_link: 'https://github.com/8398a7',
+        author_icon: 'https://github.com/8398a7.png?size=32',
         color: '',
         fields: fixedFields(),
       },
@@ -42,11 +42,11 @@ const getTemplate: any = (text: string) => {
 };
 
 const successMsg =
-  "Success: 839's workflow (PR Checks) in <https://github.com/ableco/action-slack-notify|ableco/action-slack-notify>";
+  "Success: 8398a7's workflow (PR Checks) in <https://github.com/ableco/action-slack-notify|ableco/action-slack-notify>";
 const cancelMsg =
-  "Cancel: 839's workflow (PR Checks) in <https://github.com/ableco/action-slack-notify|ableco/action-slack-notify>";
+  "Cancel: 8398a7's workflow (PR Checks) in <https://github.com/ableco/action-slack-notify|ableco/action-slack-notify>";
 const failMsg =
-  "Failed: 839's workflow (PR Checks) in <https://github.com/ableco/action-slack-notify|ableco/action-slack-notify>";
+  "Failed: 8398a7's workflow (PR Checks) in <https://github.com/ableco/action-slack-notify|ableco/action-slack-notify>";
 
 describe('ableco/action-slack-notify', () => {
   beforeEach(() => {
