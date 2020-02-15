@@ -7,32 +7,17 @@ import { Client, With } from '../src/client';
 
 const fixedFields = () => {
   return [
+    { short: true, title: 'Branch', value: process.env.GITHUB_REF },
+    { short: true, title: 'Event', value: process.env.GITHUB_EVENT_NAME },
     {
-      short: true,
-      title: 'repo',
-      value: '<https://github.com/8398a7/action-slack|8398a7/action-slack>',
-    },
-    {
-      short: true,
-      title: 'message',
-      value: '[#19] support for multiple user mentions',
-    },
-    {
-      short: true,
-      title: 'commit',
+      title: 'Action URL',
       value:
-        '<https://github.com/8398a7/action-slack/commit/b24f03a32e093fe8d55e23cfd0bb314069633b2f|b24f03a32e093fe8d55e23cfd0bb314069633b2f>',
+        '<https://github.com/ableco/action-slack-notify/commit/b24f03a32e093fe8d55e23cfd0bb314069633b2f/checks|action>',
     },
-    { short: true, title: 'author', value: '839<8398a7@gmail.com>' },
     {
-      short: true,
-      title: 'action',
       value:
-        '<https://github.com/8398a7/action-slack/commit/b24f03a32e093fe8d55e23cfd0bb314069633b2f/checks|action>',
+        '[#19] support for multiple user mentions (<https://github.com/ableco/action-slack-notify/commit/b24f03a32e093fe8d55e23cfd0bb314069633b2f|b24f03a>)',
     },
-    { short: true, title: 'eventName', value: process.env.GITHUB_EVENT_NAME },
-    { short: true, title: 'ref', value: process.env.GITHUB_REF },
-    { short: true, title: 'workflow', value: process.env.GITHUB_WORKFLOW },
   ];
 };
 
@@ -41,7 +26,9 @@ const getTemplate: any = (text: string) => {
     text,
     attachments: [
       {
-        author_name: '',
+        author_name: '839',
+        author_link: 'https://github.com/839',
+        author_icon: 'https://github.com/839.png?size=32',
         color: '',
         fields: fixedFields(),
       },
@@ -53,13 +40,16 @@ const getTemplate: any = (text: string) => {
   };
 };
 
-const successMsg = ':white_check_mark: Succeeded GitHub Actions';
-const cancelMsg = ':warning: Canceled GitHub Actions';
-const failMsg = ':no_entry: Failed GitHub Actions';
+const successMsg =
+  "Success: 839's workflow (PR Checks) in <https://github.com/ableco/action-slack-notify|ableco/action-slack-notify>";
+const cancelMsg =
+  "Cancel: 839's workflow (PR Checks) in <https://github.com/ableco/action-slack-notify|ableco/action-slack-notify>";
+const failMsg =
+  "Failed: 839's workflow (PR Checks) in <https://github.com/ableco/action-slack-notify|ableco/action-slack-notify>";
 
-describe('8398a7/action-slack', () => {
+describe('ableco/action-slack-notify', () => {
   beforeEach(() => {
-    process.env.GITHUB_REPOSITORY = '8398a7/action-slack';
+    process.env.GITHUB_REPOSITORY = 'ableco/action-slack-notify';
   });
 
   it('mentions one user', async () => {

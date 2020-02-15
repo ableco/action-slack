@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/8398a7/action-slack.git"
+    "url": "git+https://github.com/ableco/action-slack-notify.git"
   },
   "keywords": [
     "actions",
@@ -26,7 +26,7 @@
     "chat",
     "slack"
   ],
-  "author": "8398a7",
+  "author": "ableco",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.0",

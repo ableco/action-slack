@@ -37,28 +37,67 @@ export class Client {
   }
 
   async success(text: string) {
-    const template = await this.payloadTemplate();
+    if (this.github === undefined) {
+      throw Error('Specify secrets.GITHUB_TOKEN');
+    }
+    const { sha } = github.context;
+    const { owner, repo } = github.context.repo;
+    const commit = await this.github.repos.getCommit({ owner, repo, ref: sha });
+    const { author } = commit.data.commit;
+    const commitMessage = `${
+      commit.data.commit.message
+    } (<https://github.com/${owner}/${repo}/commit/${sha}|${sha.substring(
+      0,
+      7,
+    )}>)`;
+    const template = await this.payloadTemplate(author.name, commitMessage);
     template.attachments[0].color = 'good';
-    template.text += ':white_check_mark: Succeeded GitHub Actions\n';
+    template.text += `Success: ${author.name}'s workflow (${github.context.workflow}) in <https://github.com/${owner}/${repo}|${owner}/${repo}>\n`;
     template.text += text;
 
     return template;
   }
 
   async fail(text: string) {
-    const template = await this.payloadTemplate();
+    if (this.github === undefined) {
+      throw Error('Specify secrets.GITHUB_TOKEN');
+    }
+    const { sha } = github.context;
+    const { owner, repo } = github.context.repo;
+    const commit = await this.github.repos.getCommit({ owner, repo, ref: sha });
+    const { author } = commit.data.commit;
+    const commitMessage = `${
+      commit.data.commit.message
+    } (<https://github.com/${owner}/${repo}/commit/${sha}|${sha.substring(
+      0,
+      7,
+    )}>)`;
+    const template = await this.payloadTemplate(author.name, commitMessage);
     template.attachments[0].color = 'danger';
     template.text += this.mentionText(this.with.only_mention_fail);
-    template.text += ':no_entry: Failed GitHub Actions\n';
+    template.text += `Failed: ${author.name}'s workflow (${github.context.workflow}) in <https://github.com/${owner}/${repo}|${owner}/${repo}>\n`;
     template.text += text;
 
     return template;
   }
 
   async cancel(text: string) {
-    const template = await this.payloadTemplate();
+    if (this.github === undefined) {
+      throw Error('Specify secrets.GITHUB_TOKEN');
+    }
+    const { sha } = github.context;
+    const { owner, repo } = github.context.repo;
+    const commit = await this.github.repos.getCommit({ owner, repo, ref: sha });
+    const { author } = commit.data.commit;
+    const commitMessage = `${
+      commit.data.commit.message
+    } (<https://github.com/${owner}/${repo}/commit/${sha}|${sha.substring(
+      0,
+      7,
+    )}>)`;
+    const template = await this.payloadTemplate(author.name, commitMessage);
     template.attachments[0].color = 'warning';
-    template.text += ':warning: Canceled GitHub Actions\n';
+    template.text += `Cancel: ${author.name}'s workflow (${github.context.workflow}) in <https://github.com/${owner}/${repo}|${owner}/${repo}>\n`;
     template.text += text;
 
     return template;
@@ -70,7 +109,7 @@ export class Client {
     core.debug('send message');
   }
 
-  private async payloadTemplate() {
+  private async payloadTemplate(authorName: string, commitMessage: string) {
     const text = this.mentionText(this.with.mention);
     const { username, icon_emoji, icon_url, channel } = this.with;
 
@@ -83,61 +122,24 @@ export class Client {
       attachments: [
         {
           color: '',
-          author_name: this.with.author_name,
-          fields: await this.fields(),
+          author_name: authorName,
+          author_link: `https://github.com/${authorName}`,
+          author_icon: `https://github.com/${authorName}.png?size=32`,
+          fields: await this.fields(commitMessage),
         },
       ],
     };
   }
 
-  private async fields() {
-    if (this.github === undefined) {
-      throw Error('Specify secrets.GITHUB_TOKEN');
-    }
-    const { sha } = github.context;
-    const { owner, repo } = github.context.repo;
-    const commit = await this.github.repos.getCommit({ owner, repo, ref: sha });
-    const { author } = commit.data.commit;
-
+  private async fields(commitMessage: string) {
     return [
-      this.repo,
-      {
-        title: 'message',
-        value: commit.data.commit.message,
-        short: true,
-      },
-      this.commit,
-      {
-        title: 'author',
-        value: `${author.name}<${author.email}>`,
-        short: true,
-      },
-      this.action,
-      this.eventName,
       this.ref,
-      this.workflow,
+      this.eventName,
+      this.action,
+      {
+        value: `${commitMessage}`,
+      },
     ];
-  }
-
-  private get commit() {
-    const { sha } = github.context;
-    const { owner, repo } = github.context.repo;
-
-    return {
-      title: 'commit',
-      value: `<https://github.com/${owner}/${repo}/commit/${sha}|${sha}>`,
-      short: true,
-    };
-  }
-
-  private get repo() {
-    const { owner, repo } = github.context.repo;
-
-    return {
-      title: 'repo',
-      value: `<https://github.com/${owner}/${repo}|${owner}/${repo}>`,
-      short: true,
-    };
   }
 
   private get action() {
@@ -145,26 +147,21 @@ export class Client {
     const { owner, repo } = github.context.repo;
 
     return {
-      title: 'action',
+      title: 'Action URL',
       value: `<https://github.com/${owner}/${repo}/commit/${sha}/checks|action>`,
-      short: true,
     };
   }
 
   private get eventName() {
     return {
-      title: 'eventName',
+      title: 'Event',
       value: github.context.eventName,
       short: true,
     };
   }
 
   private get ref() {
-    return { title: 'ref', value: github.context.ref, short: true };
-  }
-
-  private get workflow() {
-    return { title: 'workflow', value: github.context.workflow, short: true };
+    return { title: 'Branch', value: github.context.ref, short: true };
   }
 
   private mentionText(mention: string) {
