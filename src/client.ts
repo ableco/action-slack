@@ -149,7 +149,7 @@ export class Client {
 
     return {
       title: 'Action URL',
-      value: `<https://github.com/${owner}/${repo}/commit/${sha}/checks|action>`,
+      value: `https://github.com/${owner}/${repo}/commit/${sha}/checks`,
     };
   }
 
@@ -162,7 +162,11 @@ export class Client {
   }
 
   private get ref() {
-    return { title: 'Branch', value: github.context.ref, short: true };
+    return {
+      title: 'Branch',
+      value: github.context.ref.replace('refs/heads/', ''),
+      short: true,
+    };
   }
 
   private mentionText(mention: string) {
