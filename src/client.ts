@@ -137,6 +137,7 @@ export class Client {
       this.eventName,
       this.action,
       {
+        title: 'Commit details',
         value: `${commitMessage}`,
       },
     ];

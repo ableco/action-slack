@@ -15,6 +15,7 @@ const fixedFields = () => {
         '<https://github.com/ableco/action-slack-notify/commit/b24f03a32e093fe8d55e23cfd0bb314069633b2f/checks|action>',
     },
     {
+      title: 'Commit details',
       value:
         '[#19] support for multiple user mentions (<https://github.com/ableco/action-slack-notify/commit/b24f03a32e093fe8d55e23cfd0bb314069633b2f|b24f03a>)',
     },
