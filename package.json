@@ -1,57 +1,32 @@
 {
-  "name": "action-slack",
-  "version": "2.6.0",
-  "private": true,
-  "description": "You can notify slack of GitHub Actions.",
-  "main": "lib/main.js",
+  "name": "action-slack-notify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
-    "lint": "eslint src/**/*.ts",
-    "pack": "ncc build",
-    "test": "jest && codecov",
-    "test-for-local": "jest",
-    "all": "npm run build && npm run format && npm run lint && npm run pack && npm test",
-    "release": "npm run build && npm run pack"
+    "build": "ncc run index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ableco/action-slack-notify.git"
   },
-  "keywords": [
-    "actions",
-    "node",
-    "setup",
-    "chat",
-    "slack"
-  ],
-  "author": "ableco",
+  "keywords": [],
+  "author": "",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ableco/action-slack-notify/issues"
+  },
+  "scripts": {
+    "build": "ncc build index.js"
+  },
+  "homepage": "https://github.com/ableco/action-slack-notify#readme",
   "dependencies": {
-    "@actions/core": "^1.2.0",
-    "@actions/exec": "^1.0.2",
-    "@actions/github": "^2.0.0",
-    "@actions/io": "^1.0.1",
-    "@actions/tool-cache": "^1.1.2",
-    "@slack/webhook": "^5.0.2",
-    "semver": "^7.1.1"
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^4.0.0",
+    "@slack/webhook": "^5.0.3"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.25",
-    "@types/node": "^13.1.1",
-    "@types/semver": "^6.2.0",
-    "@typescript-eslint/parser": "^2.13.0",
-    "@zeit/ncc": "^0.20.5",
-    "codecov": "^3.6.1",
-    "eslint": "^6.8.0",
-    "eslint-plugin-github": "^3.4.0",
-    "eslint-plugin-jest": "^23.1.1",
-    "jest": "^24.9.0",
-    "jest-circus": "^24.9.0",
-    "js-yaml": "^3.13.1",
-    "prettier": "^1.19.1",
-    "ts-jest": "^24.2.0",
-    "typescript": "^3.7.4"
+    "@vercel/ncc": "^0.23.0",
+    "ncc": "^0.3.6"
   }
 }

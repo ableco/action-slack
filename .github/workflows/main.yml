@@ -1,0 +1,17 @@
+name: Post slack message
+
+on:
+  push:
+    branches: enhance-slack-notifications
+
+jobs:
+  post_slack_message_job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - name: Send notification
+        uses: ./
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
