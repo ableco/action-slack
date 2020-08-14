@@ -1,44 +1,14 @@
-name: action-slack
+name: slack-notify
 description: You can notify slack of GitHub Actions.
 author: ableco
 inputs:
   status:
     description: Specify success or failure or cancelled or custom.
-  payload:
-    description: |
-      json payload
-      refs https://github.com/slackapi/node-slack-sdk/blob/v5.0.0/packages/webhook/src/IncomingWebhook.ts#L91-L106)
-  mention:
-    description: |
-      Specify channel or here or `user_id`.
-      refs: https://api.slack.com/reference/surfaces/formatting#mentioning-users
-    default: ''
-  only_mention_fail:
-    description: |
-      Specify channel or here or `user_id`.
-      refs: https://api.slack.com/reference/surfaces/formatting#mentioning-users
-    default: ''
-  author_name:
-    description: User name for slack notification.
-    default: ableco@action-slack-action
-  text:
-    description: You can overwrite text.
-    default: ''
-  username:
-    description: override the legacy integration's default name.
-    default: ''
-  icon_emoji:
-    description: an emoji code string to use in place of the default icon.
-    default: ''
-  icon_url:
-    description: an icon image URL string to use in place of the default icon.
-    default: ''
-  channel:
-    description: override the legacy integration's default channel. This should be an ID, such as C8UJ12P4P.
-    default: ''
+    required: true
+    default: "success"
 runs:
   using: node12
-  main: dist/index.js
+  main: index.js
 branding:
   icon: bell
   color: blue
